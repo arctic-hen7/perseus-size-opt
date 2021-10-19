@@ -8,7 +8,7 @@ license = "MIT"
 repository = "https://github.com/arctic-hen7/perseus-size-opt"
 # TODO make this the plugins registry
 # homepage = "https://arctic-hen7.github.io/perseus"
-readme = "../../README.md"
+readme = "README.md"
 keywords = ["wasm", "webdev", "perseus"]
 categories = ["wasm", "web-programming", "development-tools"]
 

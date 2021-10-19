@@ -2,9 +2,25 @@
 name = "perseus-size-opt"
 version = "0.1.0"
 edition = "2018"
+description = "A plugin for Perseus to add size optimizations in one line of code, without needing to eject."
+authors = ["arctic_hen7 <arctic_hen7@pm.me>"]
+license = "MIT"
+repository = "https://github.com/arctic-hen7/perseus-size-opt"
+# TODO make this the plugins registry
+# homepage = "https://arctic-hen7.github.io/perseus"
+readme = "../../README.md"
+keywords = ["wasm", "webdev", "perseus"]
+categories = ["wasm", "web-programming", "development-tools"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# Until plugins are stabilized
-perseus = { git = "https://github.com/arctic-hen7/perseus", branch = "feat-plugins" }
+perseus = "0.3.0-beta.12"
+cargo_toml = "0.10"
+thiserror = "1"
+toml = "0.5"
+
+[workspace]
+members = [
+	"examples/*"
+]

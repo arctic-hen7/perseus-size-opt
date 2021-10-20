@@ -1,5 +1,7 @@
 # Perseus Size Optimization Plugin
 
+> WARNING: Until [Perseus #66](https://github.com/arctic-hen7/perseus/issues/66) is fixed, this plugin can actually _increase_ overall binary size! Once that issue is fixed though, it should have the desired effect.
+
 This is a very simple plugin for [Perseus](https://arctic-hen7.github.io/perseus) that applies size optimizations automatically, which
 decrease the size of your final Wasm bundle significantly, meaning faster loads for users because a smaller amount of data needs to be
 transferred to their browsers. Because Perseus renders a page almost immediately through static generation, and then the Wasm bundle is

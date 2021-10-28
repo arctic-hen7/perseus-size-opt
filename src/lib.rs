@@ -226,5 +226,6 @@ pub fn perseus_size_opt<G: GenericNode>() -> Plugin<G, SizeOpts> {
             actions
         },
         empty_control_actions_registrar,
+        true,
     )
 }

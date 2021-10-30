@@ -6,6 +6,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-perseus = "0.3.0-beta.11"
+perseus = "0.3.0-beta.15"
 sycamore = "0.6"
 perseus-size-opt = { path = "../../" }

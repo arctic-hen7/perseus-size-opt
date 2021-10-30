@@ -1,4 +1,4 @@
-use perseus::{define_app, plugins::Plugins, ErrorPages, Template};
+use perseus::{define_app, Plugins, ErrorPages, Template};
 use perseus_size_opt::{perseus_size_opt, SizeOpts};
 use sycamore::template;
 
@@ -15,5 +15,5 @@ define_app! {
             p { (format!("An error with HTTP code {} occurred at '{}': '{}'.", status, url, err)) }
         }
     }),
-    plugins: Plugins::new().plugin(perseus_size_opt(), SizeOpts::default())
+    plugins: Plugins::new().plugin(perseus_size_opt, SizeOpts::default())
 }

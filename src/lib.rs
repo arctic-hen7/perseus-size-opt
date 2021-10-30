@@ -52,7 +52,7 @@ This plugin is considered quite stable due to how basic its optimizations are (t
 */
 
 use cargo_toml::{Dependency, Manifest, Profile};
-use perseus::plugins::*;
+use perseus::plugins::{empty_control_actions_registrar, Plugin, PluginAction, PluginEnv};
 use perseus::GenericNode;
 use std::fs;
 use thiserror::Error;
@@ -226,6 +226,7 @@ pub fn perseus_size_opt<G: GenericNode>() -> Plugin<G, SizeOpts> {
             actions
         },
         empty_control_actions_registrar,
-        true,
+        // This plugin only needs to run at tinker-time, otherwise it increases binary sizes
+        PluginEnv::Server,
     )
 }

@@ -1,4 +1,4 @@
-use perseus::{define_app, Plugins, ErrorPages, Template};
+use perseus::{define_app, ErrorPages, Plugins, Template};
 use perseus_size_opt::{perseus_size_opt, SizeOpts};
 use sycamore::template;
 

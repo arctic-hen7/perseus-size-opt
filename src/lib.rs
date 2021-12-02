@@ -51,11 +51,13 @@ There are a few defaults available for setting size optimization levels, or you 
 This plugin is considered quite stable due to how basic its optimizations are (the whole thing is one file), and so its stability is mostly dependent on that of Perseus. If you're happy to use Perseus, you shouldn't need to worry about using this plugin as well (in fact, it's recommended that all Perseus apps use this plugin).
 */
 
-use cargo_toml::{Dependency, Manifest, Profile};
+use cargo_toml::{Dependency, Manifest, Profile, Value};
 use perseus::plugins::{empty_control_actions_registrar, Plugin, PluginAction, PluginEnv};
 use perseus::GenericNode;
+use std::collections::BTreeMap;
 use std::fs;
 use thiserror::Error;
+use toml::value::Map;
 
 const PLUGIN_NAME: &str = "perseus-size-opt";
 const WEE_ALLOC_DEF: &str = "#[global_allocator]
@@ -78,6 +80,9 @@ pub struct SizeOpts {
     /// The value for the `codegen-units` property, which is set by default to 1 by this plugin. Higher values here will mean faster
     /// compile times but slower code. The Rust default is 16 (256 with incremental builds).
     pub codegen_units: u16,
+    /// Whether or not to enable the patch for `fluent-bundle` that fixes Perseus #83 (compiling taking forever with size optimizations). If you're running
+    /// Rust 2021, you should enable this until [this upstream issue](https://github.com/rust-lang/rust/issues/91011) is fixed.
+    pub enable_fluent_bundle_patch: bool,
 }
 impl Default for SizeOpts {
     fn default() -> Self {
@@ -86,11 +91,22 @@ impl Default for SizeOpts {
             lto: true,
             opt_level: "z".to_string(),
             codegen_units: 1,
+            enable_fluent_bundle_patch: true,
         }
     }
 }
 // We add a few more sensible named defaults
 impl SizeOpts {
+    /// The usual default, but without the `fluent-bundle` patch. Use this for greater size reductions if you're not using Rust 2021.
+    pub fn default_2018() -> Self {
+        Self {
+            wee_alloc: true,
+            lto: true,
+            opt_level: "z".to_string(),
+            codegen_units: 1,
+            enable_fluent_bundle_patch: false,
+        }
+    }
     /// The usual default, but without `lto` enabled, which is known to cause problems on some hosting services like Netlify. If your
     /// app runs out of memory during compilation, or won't be served properly, try this.
     pub fn default_no_lto() -> Self {
@@ -99,6 +115,7 @@ impl SizeOpts {
             lto: false,
             opt_level: "z".to_string(),
             codegen_units: 1,
+            enable_fluent_bundle_patch: true,
         }
     }
     /// Only enables the alternative allocator `wee_alloc`, with no further additional optimizations made.
@@ -108,6 +125,7 @@ impl SizeOpts {
             lto: false,
             opt_level: "3".to_string(),
             codegen_units: 16,
+            enable_fluent_bundle_patch: true,
         }
     }
     /// Enables all optimizations other than changing the default allocator.
@@ -117,6 +135,7 @@ impl SizeOpts {
             lto: true,
             opt_level: "z".to_string(),
             codegen_units: 1,
+            enable_fluent_bundle_patch: true,
         }
     }
 }
@@ -170,7 +189,18 @@ fn apply_size_opts(opts: &SizeOpts) -> Result<(), Error> {
     );
     release_profile.opt_level = Some(opts.opt_level.clone().into());
     release_profile.lto = Some(opts.lto.into());
-    release_profile.codegen_units = Some(opts.codegen_units);
+    release_profile.codegen_units = Some(opts.codegen_units); // If the `fluent-bundle` patch is enabled, apply it
+                                                              // TODO Remove this patch entirely once the upstream issue in LLVM is fixed and the error no longer occurs
+    if opts.enable_fluent_bundle_patch {
+        let mut fluent_bundle_conf = Map::new();
+        fluent_bundle_conf.insert("opt-level".to_string(), Value::Integer(2));
+        let mut patch = BTreeMap::new();
+        patch.insert(
+            "fluent-bundle".to_string(),
+            Value::Table(fluent_bundle_conf),
+        );
+        release_profile.package = patch;
+    }
     manifest.profile.release = Some(release_profile);
     // Add `wee_alloc` as a dependency if we're using that optimization
     if opts.wee_alloc {

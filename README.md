@@ -1,5 +1,7 @@
 # Perseus Size Optimization Plugin
 
+> Note: users of v0.1.0-v0.1.3 should upgrade to v0.1.4 if they're using Rust 2021, as an upstream bug occurs if you attempt to compile your app in release mode. See [here](#compiling-in-release-mode-never-finishes) for further details.
+
 This is a very simple plugin for [Perseus](https://arctic-hen7.github.io/perseus) that applies size optimizations automatically, which
 decrease the size of your final Wasm bundle significantly, meaning faster loads for users because a smaller amount of data needs to be
 transferred to their browsers. Because Perseus renders a page almost immediately through static generation, and then the Wasm bundle is
@@ -46,6 +48,12 @@ There are a few defaults available for setting size optimization levels, or you 
 - `::default_no_lto()` -- enables all optimizations except `lto = true`, because that can break compilation of execution on some hosting providers, like Netlify.
 - `::only_wee_alloc()` -- only uses `wee_alloc`, applying no other optimizations
 - `::no_wee_alloc()` -- applies all optimizations other than `wee_alloc`
+
+## Known Bugs
+
+### Compiling in release mode never finishes
+
+[This](https://github.com/arctic-hen7/perseus/issues/83) is due to an upstream issue in Rust 2021 that leads to size optimizations of the `fluent-bundle` package causing an overload of LLVM (see [this issue](https://github.com/rust-lang/rust/issues/91011)). As of v0.1.4, this plugin accounts for this and does not attempt to optimize `fluent-bundle` with the `default()` options. However, this will increase bundle size, so it's recommended that, until this upstream issue is fixed, users of this plugin remain on Rust 2018 for now and use the `default_2018()` function instead. This will optimize `fluent-bundle` appropriately while ensuring that this bug does not occur. If moving to Rust 2018 is infeasible, you'll have to put up with slightly larger bundles for now until the upstream issue is fixed (this seems to depend on the LLVM team now).
 
 ## Stability
 

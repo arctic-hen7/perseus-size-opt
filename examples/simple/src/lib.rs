@@ -1,17 +1,17 @@
 use perseus::{define_app, ErrorPages, Plugins, Template};
 use perseus_size_opt::{perseus_size_opt, SizeOpts};
-use sycamore::template;
+use sycamore::prelude::view;
 
 define_app! {
     templates: [
         Template::<G>::new("index").template(|_| {
-            template! {
+            view! {
                 p { "Hello World!" }
             }
         })
     ],
     error_pages: ErrorPages::new(|url, status, err, _| {
-        template! {
+        view! {
             p { (format!("An error with HTTP code {} occurred at '{}': '{}'.", status, url, err)) }
         }
     }),

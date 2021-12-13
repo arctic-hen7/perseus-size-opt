@@ -53,7 +53,7 @@ This plugin is considered quite stable due to how basic its optimizations are (t
 
 use cargo_toml::{Dependency, Manifest, Profile, Value};
 use perseus::plugins::{empty_control_actions_registrar, Plugin, PluginAction, PluginEnv};
-use perseus::GenericNode;
+use perseus::Html;
 use std::collections::BTreeMap;
 use std::fs;
 use thiserror::Error;
@@ -237,7 +237,7 @@ fn apply_size_opts(opts: &SizeOpts) -> Result<(), Error> {
 
 /// Gets the plugin itself to be handed to Perseus' `define_app!` macro. Note that this plugin's optimizations will only take effect
 /// in release mode (e.g. when you run `perseus deploy`).
-pub fn perseus_size_opt<G: GenericNode>() -> Plugin<G, SizeOpts> {
+pub fn perseus_size_opt<G: Html>() -> Plugin<G, SizeOpts> {
     Plugin::new(
         PLUGIN_NAME,
         |mut actions| {

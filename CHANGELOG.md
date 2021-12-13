@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.5](https://github.com/arctic-hen7/perseus-size-opt/compare/v0.1.4...v0.1.5) (2021-12-13)
+
+
+### Features
+
+* updated to support latest perseus/sycamore ([081544a](https://github.com/arctic-hen7/perseus-size-opt/commit/081544a7a9d7ab4040415847036a9dd3bf3a29e0))
+
 ### [0.1.4](https://github.com/arctic-hen7/perseus-size-opt/compare/v0.1.3...v0.1.4) (2021-12-02)
 
 

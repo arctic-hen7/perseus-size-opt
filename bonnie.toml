@@ -3,9 +3,8 @@ version = "0.3.2"
 [scripts]
 dev.cmd = [
 	"cd examples/simple",
-	"perseus %command"
+	"perseus %%"
 ]
-dev.args = [ "command" ]
 dev.desc = "runs the `simple` example with whatever Perseus CLI command is provided"
 
 replace-versions.cmd = "find . -name \"*Cargo.toml\" -not -path \"*target*\" -not -path \"*.perseus*\" -exec sed -i -e 's/%old_version/%new_version/g' {} \\;"

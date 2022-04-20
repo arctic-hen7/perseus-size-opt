@@ -225,8 +225,13 @@ fn apply_size_opts(opts: &SizeOpts) -> Result<(), Error> {
         // Again, this is inside `.perseus/`, we're modifying the engine, not the user's code
         let lib_contents =
             fs::read_to_string("src/lib.rs").map_err(|err| Error::ReadLibFailed { source: err })?;
+        //
         // Prepend the new allocator definition to the file
-        let lib_contents_with_wee_alloc = format!("{}\n{}", WEE_ALLOC_DEF, lib_contents);
+        // We actually need to put it on the second line after a module-level attribute
+        let lib_contents_with_wee_alloc = lib_contents.replace(
+            "#![allow(clippy::unused_unit)]",
+            &format!("#![allow(clippy::unused_unit)]\n{}\n", WEE_ALLOC_DEF),
+        );
 
         fs::write("src/lib.rs", lib_contents_with_wee_alloc)
             .map_err(|err| Error::WriteLibFailed { source: err })?;

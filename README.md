@@ -12,11 +12,28 @@ If you're new to Perseus, check it out [on it's website](https://arctic-hen7.git
 
 ## Usage
 
-In your `src/lib.rs`, add the following to the bottom of the `define_app!` macro:
+In your `src/lib.rs`, call the following function on `PerseusApp`:
+
+``` rust
+PerseusApp::new()
+    [...]
+    .plugins(Plugins::new()
+        .plugin(
+            perseus_size_opt,
+            SizeOpts::default()
+        ))
+```
+
+<details>
+<summary>I'm using `define_app!`</summary>
+
+If you're still using `define_app!` from v0.3.3, you should upgrade to using `PerseusApp` soon, but you can still use this plugin by adding the following to the bottom of the `define_app!` call:
 
 ```rust
-plugins: Plugins::new().plugin(perseus_size_opt(), SizeOpts::default())
+plugins: Plugins::new().plugin(perseus_size_opt, SizeOpts::default())
 ```
+
+</details>
 
 If you have any other plugins defined, add the `.plugin()` call where appropriate. You'll also need to add the following imports:
 

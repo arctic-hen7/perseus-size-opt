@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.8](https://github.com/arctic-hen7/perseus-size-opt/compare/v0.1.7...v0.1.8) (2022-04-20)
+
+
+### Features
+
+* upgraded for perseus v0.3.4 ([bcfbc68](https://github.com/arctic-hen7/perseus-size-opt/commit/bcfbc68ace29b7fd15f1ed7ef70dc7930cb65b45))
+
 ### [0.1.7](https://github.com/arctic-hen7/perseus-size-opt/compare/v0.1.6...v0.1.7) (2021-12-21)
 
 ### [0.1.6](https://github.com/arctic-hen7/perseus-size-opt/compare/v0.1.5...v0.1.6) (2021-12-20)
